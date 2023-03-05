@@ -6,9 +6,9 @@ import Rightbar from "./Rightbar";
 export default function Form () {
     
     return (
-        <form className="form">
+        <div className="form">
             <Leftbar />
             <Rightbar />
-        </form>
+        </div>
     );
 }

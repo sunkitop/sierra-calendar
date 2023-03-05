@@ -1,7 +1,30 @@
+:root {
+  --red: rgba(255, 135, 135, 0.4);
+  --red-orange: rgba(248, 196, 180, 0.4);
+  --orange: rgba(220, 132, 73, 0.4);
+  --yellow: rgba(253, 211, 106, 0.4);
+  --yellow-green: rgba(229, 235, 178, 0.4);
+  --lime: rgba(188, 226, 158, 0.4);
+  --mint: rgba(200, 255, 212, 0.4);
+  --blue: rgba(184, 232, 252, 0.4);
+  --purple: rgba(190, 109, 183, 0.4);
+  --violet: rgba(192, 74, 130, 0.4);
+  --brown: rgba(139, 126, 116, 0.4);
+}
 
 * {
   margin: 0;
   padding: 0;
+}
+
+
+button{
+  background-color: transparent;
+  
+  border:none;
+  border-radius: 50%;
+
+  cursor: pointer;
 }
 
 .todos-container{
@@ -28,9 +51,9 @@
 
 .form{
   /** Sizeable width for the form **/
-  width:1200px;
+  width: 1200px;
   /** Sizeable height for the form **/
-  height:650px;
+  height: 650px;
   /** Black color with opacity **/
   background-color:rgba(255,255,255,0.4);
   color: white;
@@ -77,16 +100,21 @@
 .left-bar .month-year{
   
   display: flex;
+  width: 70%;
   align-items: center;
   justify-content: space-evenly;
 
-  width: 100%;
+  column-gap: 0px;
+
   height: 80px;
 
   border-radius: 25px 0 0 0;
 }
 
-.left-bar .month-year span {
+.left-bar .month-year .display {
+  display: flex;
+  flex-direction: row;
+  column-gap: 25px;
   font-size: 32px;
 
 }
@@ -158,59 +186,115 @@
 
 .daybox button {
   font-family: inherit;
-  color: white;
-  font-size: 14px;
+  font-size: 16px;
+  border-radius: 100%;
   
-  
-  border-radius: 0%;
+  align-self: center;
+  height: 20px;
+  width: 20px;
   
 }
+
+[type="active-ordinary"]{
+  color: white;
+}
+
+[type="active-holiday"]{
+  color: rgba(255, 0, 0, 0.8);
+}
+
+[type="inactive-ordinary"]{
+  color: rgba(255, 255, 255, 0.4);
+}
+
+[type="inactive-holiday"]{
+  color: rgba(255, 0, 0, 0.4);
+}
+
 
 .daybox .event {
   font-size: 12px;
+  text-align: center;
 }
 
-.daybox .event1{
-  background-color: rgba(153,50,204,0.3);
+[color="red"] {
+  background-color: var(--red);
 }
 
-.daybox .event2{
-  background-color: rgba(220,20,60,0.3);
+[color='red-orange'] {
+  background-color: var(--red-orange);
 }
 
-.daybox .event3{
-  background-color: rgba(20,252,255,0.3);
+[color='orange'] {
+  background-color: var(--orange);
 }
 
-.daybox .event4{
-  background-color: rgba(100,149,237,0.3);
+[color='yellow'] {
+  background-color: var(--yellow);
 }
+
+[color='yellow-green'] {
+  background-color: var(--yellow-green);
+}
+
+[color='lime'] {
+  background-color: var(--lime);
+}
+
+[color='mint'] {
+  background-color: var(--mint);
+}
+
+[color='blue'] {
+  background-color: var(--blue);
+}
+
+[color='purple'] {
+  background-color: var(--purple);
+}
+
+[color="violet"] {
+  background-color: var(--violet);
+}
+
+[color='brown'] {
+  background-color: var(--brown);
+}
+
+
+/* --------------------------RIGHT BAR----------------------------- */
 
 .right-bar{
   display: flex;
   flex-wrap: wrap;
-  row-gap: 60px;
-
   flex-direction: column;
-  display: flex;
+  
   align-items: center;
   justify-content: space-between;
   
   position: relative;
 
   margin: 45px 0;
-
+  
   width: calc(25%);
   height: auto;
 }
 
-.right-bar .day > span {
-  font-size: 150px;
-  line-height: 150px;
+.right-bar .topbar{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.right-bar .weekday > span {
+.right-bar .topbar .day > span {
+  font-size: 150px;
+  line-height: 150px;
+  text-align: center;
+}
+
+.right-bar .topbar .weekday > span {
   font-size: 32px;
+  text-align: center;
 }
 
 h1 {
@@ -222,28 +306,18 @@ h1 {
   text-transform: uppercase;
 }
 
-.form-group{
-  /** Bottom space between one form-group and the other **/
-  margin-bottom:20px;
-  /** Responsive layout **/
+.right-bar .midbar form{
   display: flex;
-  /** One element on top of the other **/
-  flex-direction: column;
+  justify-content: stretch;
+  flex-wrap: wrap;
 }
 
-button{
-  background-color: transparent;
-  
-  border:none;
-  border-radius: 50%;
-
-  cursor: pointer;
-}
 .right-bar .bottombar{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
 }
+
 .right-bar .form-submit-btn{
   /** Take up the entire available width **/
   width:60px; 
