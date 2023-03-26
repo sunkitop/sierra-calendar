@@ -3,7 +3,7 @@ import LDays from "./LDays";
 import LMonthYear from "./LMonthYear";
 
 export default function Leftbar () {
-    
+    console.log('🎨 Render : Leftbar');
 
     return (
         <div className="left-bar">

@@ -1,14 +1,13 @@
-import moment from "moment";
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { modify, remove } from "../features/events/eventSlice";
-import RDisplay from "./RDisplay";
-
+import moment from 'moment';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { modify, remove } from '../features/event/eventSlice';
+import RDisplay from './RDisplay';
 
 export default function Rightbar() {
+    console.log('🎨 Render : Rightbar');
     const now = useSelector((state) => state.time);
-    
-    
+
     const nowDay = moment(now).format('D');
     const nowWeekday = moment(now).format('dddd');
 
@@ -16,14 +15,7 @@ export default function Rightbar() {
     const dispatch = useDispatch();
 
     const onModify = (e) => {
-        const { name, dayStart, dayEnd, timeStart, timeEnd, participants, color } =
-          form;
-        dispatch(
-          modify({
-            year: 2023,
-            month: 1,
-            day: 2,
-            id: 0,
+        const {
             name,
             dayStart,
             dayEnd,
@@ -31,24 +23,36 @@ export default function Rightbar() {
             timeEnd,
             participants,
             color,
-          })
-        );
-      };
-    
-      const onRemove = (e) => {
+        } = form;
         dispatch(
-          remove({
-            year: 2023,
-            month: 1,
-            day: 2,
-            id: 1,
-          })
+            modify({
+                year: 2023,
+                month: 1,
+                day: 2,
+                id: 0,
+                name,
+                dayStart,
+                dayEnd,
+                timeStart,
+                timeEnd,
+                participants,
+                color,
+            }),
         );
-      };
+    };
+
+    const onRemove = (e) => {
+        dispatch(
+            remove({
+                year: 2023,
+                month: 1,
+                day: 2,
+                id: 1,
+            }),
+        );
+    };
 
     return (
-
-        
         <div className="right-bar">
             <div className="topbar">
                 <div className="day">
@@ -60,17 +64,16 @@ export default function Rightbar() {
             </div>
 
             <RDisplay />
-            
+
             <div className="bottombar">
                 <button className="form-submit-btn" onClick={() => onModify()}>
-                Modify
+                    Modify
                 </button>
 
                 <button className="form-submit-btn" onClick={() => onRemove()}>
-                Delete
+                    Delete
                 </button>
             </div>
-
         </div>
     );
 }

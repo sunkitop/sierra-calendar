@@ -18,13 +18,13 @@ export default function Day({ daynum }) {
 
   const timeString = moment(daynum).format("YYYYMMDD");
 
-  useEffect(() => {
-    if (events[timeString] === undefined) {
+  
+  
+  if (events[timeString] === undefined) {
       dispatch(setup(timeString));
-    }
-  }, [events, timeString]);
+  }
 
-  const arrEvent = events[timeString];
+const arrEvent = events[timeString];
 
   return (
     <div className="daybox">
@@ -36,6 +36,7 @@ export default function Day({ daynum }) {
         <div
           className="event"
           color={ele.color}
+
           key={
             moment(daynum).format("YYYYMMDD") +
             "-" +

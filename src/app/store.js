@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import eventReducer from '../features/events/eventSlice';
+import eventReducer from '../features/event/eventSlice';
 import formReducer from '../features/form/formSlice';
 import timeReducer from '../features/time/timeSlice';
 

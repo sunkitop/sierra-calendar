@@ -10,6 +10,7 @@
   --purple: rgba(190, 109, 183, 0.4);
   --violet: rgba(192, 74, 130, 0.4);
   --brown: rgba(139, 126, 116, 0.4);
+  --lunch: rgba(0, 0, 0, 0.4);
 }
 
 * {
@@ -137,8 +138,9 @@ button{
 }
 
 .left-bar .weekdays{
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  /* flex-direction: row; */
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 
   align-items: center;
 
@@ -153,46 +155,42 @@ button{
 }
 
 .left-bar .weekdays div{
-  width: calc(100%/7);
   
   text-align: center;
 }
 
 .left-bar .days{
   
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  grid-template-rows: repeat(5, 1.5fr 1fr 1fr 1fr 1fr 1fr);
+  gap: 2px;
+
   width: 100%;
   height:450px;
   
-  justify-content: space-around;
+  align-items: baseline;
+  justify-items: stretch;
   
+  border: 1px solid black;
 }
 
-.daybox {
-  display: flex;
-  flex-direction: column;
-  
-  align-items: stretch;
-  justify-items: center;
-  
-  
-  height: 20px;
-  width: calc(100%/7);
-  
-  height: auto;
-}
-
-.daybox button {
+.days button {
   font-family: inherit;
   font-size: 16px;
   border-radius: 100%;
   
   align-self: center;
-  height: 20px;
-  width: 20px;
-  
+  height: 100%;
+  width: 100%;
+
+  text-align: center;
+}
+
+.days [type="event"] {
+  font-size: 12px;
+  text-align: center;
+  border-radius: 5px;
 }
 
 [type="active-ordinary"]{
@@ -212,10 +210,7 @@ button{
 }
 
 
-.daybox .event {
-  font-size: 12px;
-  text-align: center;
-}
+
 
 [color="red"] {
   background-color: var(--red);
@@ -259,6 +254,10 @@ button{
 
 [color='brown'] {
   background-color: var(--brown);
+}
+
+[color='lunch'] {
+  background-color: var(--lunch);
 }
 
 
@@ -306,10 +305,41 @@ h1 {
   text-transform: uppercase;
 }
 
+.right-bar .midbar {
+  height: calc(50%);
+}
+
 .right-bar .midbar form{
-  display: flex;
-  justify-content: stretch;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-template-rows: repeat(8, 1fr);
+  row-gap: 2px;
+  column-gap: 7px;
+
+  
+  justify-content: center;
+  align-content: center;
+
+  align-items: center;
+  justify-items: stretch;
+
+  width: 100%;
+  height: 100%;
+}
+
+#form button{
+  grid-column: 1 / span 2;
+  justify-self: center;
+}
+
+#color {
+  width: 172px;
+  height: 100%;
+  border-radius: 5;
+}
+
+.right-bar .midbar label {
+  text-align: right;
 }
 
 .right-bar .bottombar{
@@ -338,3 +368,6 @@ h1 {
   cursor:pointer;
 }
 
+#create {
+  width: 150px;
+}

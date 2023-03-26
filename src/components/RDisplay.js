@@ -1,169 +1,163 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { change, initialize } from "../features/form/formSlice";
-import { add } from "../features/events/eventSlice";
+import { useDispatch, useSelector } from 'react-redux';
+import { change, initialize } from '../features/form/formSlice';
+import { add } from '../features/event/eventSlice';
 
-import chroma from 'chroma-js';
 import Select from 'react-select';
-import { colourOptions } from './data/ColourOption';
-
-const dot = (color = 'transparent') => ({
-  alignItems: 'center',
-  display: 'flex',
-
-  ':before': {
-    backgroundColor: color,
-    borderRadius: 10,
-    content: '" "',
-    display: 'block',
-    marginRight: 8,
-    height: 10,
-    width: 10,
-  },
-});
-
-const colourStyles = {
-  control: (styles) => ({ ...styles, backgroundColor: 'white' }),
-  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
-    const color = chroma(data.color);
-    return {
-      ...styles,
-      backgroundColor: isDisabled
-        ? undefined
-        : isSelected
-        ? data.color
-        : isFocused
-        ? color.alpha(0.1).css()
-        : undefined,
-      color: isDisabled
-        ? '#ccc'
-        : isSelected
-        ? chroma.contrast(color, 'white') > 2
-          ? 'white'
-          : 'black'
-        : data.color,
-      cursor: isDisabled ? 'not-allowed' : 'default',
-
-      ':active': {
-        ...styles[':active'],
-        backgroundColor: !isDisabled
-          ? isSelected
-            ? data.color
-            : color.alpha(0.3).css()
-          : undefined,
-      },
-    };
-  },
-  input: (styles) => ({ ...styles, ...dot() }),
-  placeholder: (styles) => ({ ...styles, ...dot('#ccc') }),
-  singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
-};
-
+import { colourOptions, colourStyles } from './data/ColourOption';
 
 export default function RDisplay() {
-  const form = useSelector((state) => state.form);
-  const dispatch = useDispatch();
+    console.log('🎨 Render : RDisplay');
+    const form = useSelector((state) => state.form);
+    const dispatch = useDispatch();
 
-  const [ selectedOption, setSelectedOption ] = useState("none");
-  
-  const onChange = (e) => {
-    
-    const { name, value } = e.target;
-    if (name==='color') {
-      setSelectedOption(e.target.value);
+    const [selectedOption, setSelectedOption] = useState('none');
+
+    const decomposeForm = (formObj) => {
+      const newDayStart = formObj.dayStart.replace(/-/gi,"");
+      const newDayEnd = formObj.dayEnd.replace(/-/gi,"");
+      const newTimeStart = formObj.timeStart.replace(/:/gi,"");
+      const newTimeEnd = formObj.timeEnd.replace(/:/gi,"");
+      
+      return (
+        {
+          year: newDayStart.slice(0,4), 
+          month: newDayStart.slice(4,6), 
+          day: newDayStart.slice(6,8), 
+          event: {
+            ...formObj,
+            dayStart: newDayStart,
+            dayEnd: newDayEnd,
+            timeStart: newTimeStart,
+            timeEnd: newTimeEnd,
+          }
+        }
+      );
     }
     
-    
-    dispatch(
-      change({
-        key: name,
-        value,
-      })
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'color') {
+            setSelectedOption(e.target.value);
+        }
+        // console.log(`${e.target.name} : ${typeof(e.target.value)}`);
+        dispatch(
+            change({
+                key: name,
+                value,
+            }),
+        );
+    };
+
+    // form submit event handler
+    const onSubmit = (e) => {
+        e.preventDefault();
+        const newObject = decomposeForm(form);
+        dispatch(
+            add({
+                ...newObject
+            }),
+        );
+        dispatch(initialize());
+        setSelectedOption('none'); // we need to manually initialize React-Select
+
+    };
+
+    const inputStyles = {
+        backgroundColor: 'white',
+        border: '1px solid #ccc',
+        borderRadius: 4,
+        padding: '10px',
+        margin: '1px 0',
+        width: '150px',
+        height: '1px',
+        color: '#555',
+        fontSize: '16px',
+    };
+
+    return (
+        <div className="midbar">
+            <form id="form" onSubmit={onSubmit}>
+              <label htmlFor="eventName">Event Name:</label>
+              <input
+                  id="eventName"
+                  name="name"
+                  type="text"
+                  placeholder="Event Name"
+                  onChange={onChange}
+                  value={form.name}
+                  style={inputStyles}
+              />
+              <label htmlFor="dayStart">From:</label>
+              <input
+                  id="dayStart"
+                  name="dayStart"
+                  type="date"
+                  placeholder="Date-Start"
+                  onChange={onChange}
+                  value={form.dayStart}
+                  style={inputStyles}
+              />
+              <label htmlFor="dayEnd">To:</label>
+              <input
+                  id="dayEnd"
+                  name="dayEnd"
+                  type="date"
+                  placeholder="Date-End"
+                  onChange={onChange}
+                  value={form.dayEnd}
+                  style={inputStyles}
+              />
+              <label htmlFor="timeStart">Time starts:</label>
+              <input
+                  id="timeStart"
+                  name="timeStart"
+                  type="time"
+                  placeholder="Time-Start"
+                  onChange={onChange}
+                  value={form.timeStart}
+                  style={inputStyles}
+              />
+              <label htmlFor="timeEnd">Time ends:</label>
+              <input
+                  id='timeEnd'
+                  name="timeEnd"
+                  type="time"
+                  placeholder="Time-End"
+                  onChange={onChange}
+                  value={form.timeEnd}
+                  style={inputStyles}
+              />
+              <label htmlFor="participants">Participants:</label>
+              <input
+                  id='participants'
+                  name="participants"
+                  type="text"
+                  placeholder="Participants"
+                  onChange={onChange}
+                  value={form.participants}
+                  style={inputStyles}
+              />
+
+              <label htmlFor="color">Color:</label>
+              <Select
+                  id="color"
+                  name="color"
+                  placeholder="Color"
+                  onChange={onChange}
+                  value={colourOptions.filter(function (option) {
+                      return option.value === selectedOption;
+                  })}
+                  defaultValue=''
+                  options={colourOptions}
+                  styles={colourStyles}
+                  style={inputStyles}
+              />
+
+                <button id="create" className="form-submit-btn" type="submit">
+                    Create
+                </button>
+            </form>
+        </div>
     );
-  };
-
-  // form submit event handler
-  const onSubmit = (e) => {
-    e.preventDefault();
-    dispatch(
-      add({
-        yar: 2023,
-        month: 1,
-        day: 2,
-        event: form,
-      })
-    );
-    dispatch(initialize());
-  };
-
-  
-
-  return (
-      <div className="midbar">
-        <h3>입력</h3>
-        <form onSubmit={onSubmit}>
-          <input
-            name="name"
-            placeholder="Event Name"
-            onChange={onChange}
-            value={form.name}
-          />
-
-          <input
-            name="dayStart"
-            placeholder="Day-Start"
-            onChange={onChange}
-            value={form.dayStart}
-          />
-
-          <input
-            name="dayEnd"
-            placeholder="Day-End"
-            onChange={onChange}
-            value={form.dayEnd}
-          />
-
-          <input
-            name="timeStart"
-            placeholder="Time-Start"
-            onChange={onChange}
-            value={form.timeStart}
-          />
-
-          <input
-            name="timeEnd"
-            placeholder="Time-End"
-            onChange={onChange}
-            value={form.timeEnd}
-          />
-
-          <input
-            name="participants"
-            placeholder="Participants"
-            onChange={onChange}
-            value={form.participants}
-          />
-
-          <Select
-            name="color"
-            placeholder="Color"
-            onChange={onChange}
-            value={colourOptions.filter(function(option) {
-              return option.value === selectedOption;
-            })}
-
-            options={colourOptions}
-            styles={colourStyles}
-          />
-          
-          <button
-            className="form-submit-btn"
-            type="submit"
-          >
-            New
-          </button>
-        </form>
-
-    </div>
-  );
 }

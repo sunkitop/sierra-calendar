@@ -4,16 +4,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { next, prev } from "../features/time/timeSlice";
 
 export default function LMonthYear() {
+    console.log('🎨 Render : LMonthYear');
     
     const { thisTime } = useSelector((state) => state.time);
+    const objEvents = useSelector((state) => state.event);
     const dispatch = useDispatch();
-    
+
+    const thisMonthFirstDay = moment(thisTime).startOf('month');
+    const thisMonthFirstDayWeekday = thisMonthFirstDay.weekday() === 0 ? 7 : thisMonthFirstDay.weekday();
+    const thisMonthLastDay = moment(thisTime).startOf('month').add(1,'months').subtract(1,'days');
+    const thisMonthLastDayWeekday = thisMonthLastDay.weekday() === 0 ? 7 : thisMonthLastDay.weekday();
+    const thisMonthLength = thisMonthLastDay.diff(thisMonthFirstDay,'days')+1;
+
+    const subtractValue = 1-thisMonthFirstDayWeekday;
+    const addValue = thisMonthLength+7-thisMonthLastDayWeekday-1;
+
     const thisYear = moment(thisTime).year();
     const thisMonth = moment(thisTime).format('MMM').toUpperCase();
     
     const onClickRight = () => {dispatch(next())};
     const onClickLeft = () => {dispatch(prev())};
 
+    
 
     return (
         <div className="month-year">
